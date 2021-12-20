@@ -26,7 +26,7 @@ jobs:
       - name: 🥸 Assume AWS role
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::145701032331:role/SurveyEngineDeployer
+          role-to-assume: arn:aws:iam::402952170352:role/GithubActionsDeployer
           role-session-name: "giveitaway-pipeline-${{ github.run_number }}"
           aws-region: ap-southeast-2
 
