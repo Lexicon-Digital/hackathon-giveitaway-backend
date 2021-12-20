@@ -1,0 +1,53 @@
+service: giveitaway
+frameworkVersion: "2 || 3"
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-dynamodb-local
+  - serverless-offline
+
+custom:
+  resourceNamePrefix: giveitaway
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ap-southeast-2
+  lambdaHashingVersion: "20201221"
+  memorySize: 256
+  stage: dev
+  stackName: ${self:custom.resourceNamePrefix}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:dynamodb:"
+            - "${self:provider.region}:"
+            - !Ref ExampleTable
+            - ":*"
+
+functions:
+  health:
+    name: ${self:custom.resourceNamePrefix}-take
+    handler: src/take/take-handler.handler
+    events:
+      - httpApi: "GET /api/take"
+    environment:
+      ENV: ${file(./config.${opt:stage, self:provider.stage}.json):ENV}
+
+resources:
+  - ${file(tables/exampleTable.yml)}
+  - extensions:
+      HealthLambdaFunction:
+        Properties:
+          Architectures:
+            - arm64

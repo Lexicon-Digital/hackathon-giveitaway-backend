@@ -1,0 +1,13 @@
+name: 🚀 Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: 🚀 Deploy
+    uses: Lexicon-Digital/hackathon-giveitaway-backend/.github/workflows/serverless-deploy.yml@main
+    with:
+      stage: prod

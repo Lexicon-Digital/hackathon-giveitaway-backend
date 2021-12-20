@@ -1,0 +1,34 @@
+on:
+  workflow_call:
+    inputs:
+      stage:
+        required: true
+        type: string
+
+jobs:
+  serverless-deploy:
+    name: 🚀 Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: 💻 Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+
+      - name: ⬇️ NPM install
+        run: npm ci
+
+      - name: 🥸 Assume AWS role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::145701032331:role/SurveyEngineDeployer
+          role-session-name: "giveitaway-pipeline-${{ github.run_number }}"
+          aws-region: ap-southeast-2
+
+      - name: 🚀 Deploy to ${{ inputs.stage }}
+        run: npm run deploy -- --stage ${{ inputs.stage }}
