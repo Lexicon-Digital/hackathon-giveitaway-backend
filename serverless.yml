@@ -38,14 +38,21 @@ functions:
     name: ${self:custom.resourceNamePrefix}-take
     handler: src/take/take-handler.handler
     events:
-      - httpApi: "GET /api/take"
+      - http:
+          path: api/take
+          method: get
+          cors: true
     environment:
       ENV: ${file(./config.${opt:stage, self:provider.stage}.json):ENV}
   give:
     name: ${self:custom.resourceNamePrefix}-give
+    cors: true
     handler: src/give/give-handler.handler
     events:
-      - httpApi: "POST /api/give"
+      - http:
+          path: api/give
+          method: post
+          cors: true
     environment:
       ENV: ${file(./config.${opt:stage, self:provider.stage}.json):ENV}
 
