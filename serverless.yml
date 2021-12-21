@@ -29,13 +29,9 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        Fn::Join:
-          - ""
-          - - "arn:aws:dynamodb:"
-            - "${self:provider.region}:"
-            - "${self:custom.workspace}:table/"
-            - !Ref ItemsTable
-            - ":*"
+        Fn::GetAtt:
+          - ItemsTable
+          - Arn
 
 functions:
   take:
