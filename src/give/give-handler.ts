@@ -8,7 +8,7 @@ import { marshall } from "@aws-sdk/util-dynamodb";
 import { v4 as uuid } from "uuid";
 
 interface Item {
-  id: string;
+  ItemId: string;
   title: string;
   description: string;
   imageUrl: string;
@@ -23,7 +23,7 @@ interface Location {
 
 export const handler: APIGatewayProxyHandler = async (event, context) => {
   var postData: Item = JSON.parse(event.body || "");
-  postData.id = uuid();
+  postData.ItemId = uuid();
 
   const client = new DynamoDBClient({ region: "ap-southeast-2" });
 
@@ -33,6 +33,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
   };
 
   console.log("Adding a new item...");
+  console.log(params);
 
   var response = {
     statusCode: 201,
