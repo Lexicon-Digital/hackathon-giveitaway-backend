@@ -8,6 +8,7 @@ plugins:
 
 custom:
   resourceNamePrefix: giveitawaynow
+  workspace: 402952170352
 
 provider:
   name: aws
@@ -32,6 +33,7 @@ provider:
           - ""
           - - "arn:aws:dynamodb:"
             - "${self:provider.region}:"
+            - "${self:custom.workspace}:table/"
             - !Ref ItemsTable
             - ":*"
 
