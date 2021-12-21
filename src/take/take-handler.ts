@@ -6,8 +6,9 @@ import {
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 
 Date.prototype.addHours = function (hours: number) {
-  this.setTime(this.getTime() + hours * 60 * 60 * 1000);
-  return this;
+  const newDate = new Date(this);
+  newDate.setTime(this.getTime() + hours * 60 * 60 * 1000);
+  return newDate;
 };
 
 export async function handler() {
@@ -41,7 +42,7 @@ export async function handler() {
             console.log("expiryTime: " + expiryTime);
             console.log("now: " + now);
 
-            if (expiryTime > now) {
+            if (expiryTime < now) {
               return false; // skip old listings
             }
 
