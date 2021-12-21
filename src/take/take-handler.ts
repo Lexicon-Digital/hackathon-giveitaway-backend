@@ -41,7 +41,7 @@ export async function handler() {
           })
           .filter(function (item) {
             const listedTime = new Date(item.listedTime);
-            const expiryTime = listedTime.addHours(2);
+            const expiryTime = listedTime.addHours(40);
             const now = new Date();
             console.log("listedDate: " + listedTime);
             console.log("expiryTime: " + expiryTime);
