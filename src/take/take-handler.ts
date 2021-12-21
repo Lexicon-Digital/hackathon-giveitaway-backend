@@ -5,6 +5,11 @@ import {
 } from "@aws-sdk/client-dynamodb";
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 
+Date.prototype.addHours = function (hours: number) {
+  this.setTime(this.getTime() + hours * 60 * 60 * 1000);
+  return this;
+};
+
 export async function handler() {
   const client = new DynamoDBClient({ region: "ap-southeast-2" });
 
@@ -22,11 +27,26 @@ export async function handler() {
       const results = await client.send(new ScanCommand(params));
 
       response.body = JSON.stringify(
-        (results.Items || []).map(function (element, index, array) {
-          console.log(unmarshall(element));
+        (results.Items || [])
+          .map(function (element, index, array) {
+            const item = unmarshall(element);
+            console.log(item);
+            return item;
+          })
+          .filter(function (item) {
+            const listedTime = new Date(item.listedTime);
+            const expiryTime = listedTime.addHours(2);
+            const now = new Date();
+            console.log("listedDate: " + listedTime);
+            console.log("expiryTime: " + expiryTime);
+            console.log("now: " + now);
 
-          return unmarshall(element);
-        }),
+            if (expiryTime > now) {
+              return false; // skip old listings
+            }
+
+            return true;
+          }),
         null,
         2
       );

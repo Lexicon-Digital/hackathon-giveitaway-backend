@@ -11,6 +11,7 @@ interface Item {
   ItemId: string;
   title: string;
   description: string;
+  pickupInstructions: string;
   imageUrl: string;
   listedTime: string;
   location: Location;
