@@ -39,6 +39,11 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
   var response = {
     statusCode: 201,
     body: "",
+    headers: {
+      "Access-Control-Allow-Headers" : "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+    },
   };
 
   const run = async function () {
@@ -50,6 +55,11 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       response = {
         statusCode: 500,
         body: "",
+        headers: {
+          "Access-Control-Allow-Headers" : "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+        },
       };
     }
   };

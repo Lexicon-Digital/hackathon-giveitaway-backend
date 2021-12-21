@@ -21,6 +21,11 @@ export async function handler() {
   var response = {
     statusCode: 500,
     body: "Could not retrieve items",
+    headers: {
+      "Access-Control-Allow-Headers" : "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+    },
   };
 
   const run = async () => {
