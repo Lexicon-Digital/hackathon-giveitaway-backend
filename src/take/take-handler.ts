@@ -22,9 +22,9 @@ export async function handler() {
     statusCode: 500,
     body: "Could not retrieve items",
     headers: {
-      "Access-Control-Allow-Headers" : "Content-Type",
+      "Access-Control-Allow-Headers" : "*",
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+      "Access-Control-Allow-Methods": "*"
     },
   };
 
