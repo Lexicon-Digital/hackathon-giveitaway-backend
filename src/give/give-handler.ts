@@ -54,6 +54,5 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
   };
 
   await run();
-
   return response;
 };

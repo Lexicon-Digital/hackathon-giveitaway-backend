@@ -1,25 +1,41 @@
-import { env } from "process";
+import {
+  DynamoDBClient,
+  ScanCommand,
+  ScanCommandInput,
+} from "@aws-sdk/client-dynamodb";
+import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 
 export async function handler() {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify(
-      [
-        {
-          title: "Free guitar",
-          description: "Only a couple of broken  strings!\n\nOfficeworks, Bourke St",
-          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Red_Hot_Chili_Peppers_-_Rock_am_Ring_2016_-2016156230942_2016-06-04_Rock_am_Ring_-_Sven_-_1D_X_MK_II_-_0410_-_AK8I1358_mod.jpg/600px-Red_Hot_Chili_Peppers_-_Rock_am_Ring_2016_-2016156230942_2016-06-04_Rock_am_Ring_-_Sven_-_1D_X_MK_II_-_0410_-_AK8I1358_mod.jpg",
-          listedTime: "2021-12-20T23:39:46+0000",
-          location: {
-            "lat": -37.815470,
-            "lng": 144.959191
-          },
-        },
-      ],
-      null,
-      2
-    ),
+  const client = new DynamoDBClient({ region: "ap-southeast-2" });
+
+  const params: ScanCommandInput = {
+    TableName: "giveitawaynow-items",
   };
 
+  var response = {
+    statusCode: 500,
+    body: "Could not retrieve items",
+  };
+
+  const run = async () => {
+    try {
+      const results = await client.send(new ScanCommand(params));
+
+      response.body = JSON.stringify(
+        (results.Items || []).map(function (element, index, array) {
+          console.log(unmarshall(element));
+
+          return unmarshall(element);
+        }),
+        null,
+        2
+      );
+      response.statusCode = 200;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  await run();
   return response;
 }
