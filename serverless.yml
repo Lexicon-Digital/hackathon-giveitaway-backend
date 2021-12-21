@@ -53,8 +53,3 @@ functions:
 
 resources:
   - ${file(tables/itemsTable.yml)}
-  - extensions:
-      HealthLambdaFunction:
-        Properties:
-          Architectures:
-            - arm64
