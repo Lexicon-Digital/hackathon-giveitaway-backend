@@ -15,7 +15,7 @@ provider:
   region: ap-southeast-2
   lambdaHashingVersion: "20201221"
   memorySize: 256
-  stage: dev
+  stage: local
   stackName: ${self:custom.resourceNamePrefix}
   iamRoleStatements:
     - Effect: "Allow"
@@ -32,20 +32,27 @@ provider:
           - ""
           - - "arn:aws:dynamodb:"
             - "${self:provider.region}:"
-            - !Ref ExampleTable
+            - !Ref ItemsTable
             - ":*"
 
 functions:
-  health:
+  take:
     name: ${self:custom.resourceNamePrefix}-take
     handler: src/take/take-handler.handler
     events:
       - httpApi: "GET /api/take"
     environment:
       ENV: ${file(./config.${opt:stage, self:provider.stage}.json):ENV}
+  give:
+    name: ${self:custom.resourceNamePrefix}-give
+    handler: src/give/give-handler.handler
+    events:
+      - httpApi: "POST /api/give"
+    environment:
+      ENV: ${file(./config.${opt:stage, self:provider.stage}.json):ENV}
 
 resources:
-  - ${file(tables/exampleTable.yml)}
+  - ${file(tables/itemsTable.yml)}
   - extensions:
       HealthLambdaFunction:
         Properties:

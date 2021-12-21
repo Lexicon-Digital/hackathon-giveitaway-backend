@@ -1,14 +1,14 @@
 Resources:
-  ExampleTable:
+  ItemsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ${self:custom.resourceNamePrefix}-example-table
+      TableName: ${self:custom.resourceNamePrefix}-items
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       KeySchema:
-        - AttributeName: PersonId
+        - AttributeName: ItemId
           KeyType: HASH
       AttributeDefinitions:
-        - AttributeName: PersonId
+        - AttributeName: ItemId
           AttributeType: S
