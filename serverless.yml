@@ -1,4 +1,4 @@
-service: giveitaway
+service: giveitawaynow
 frameworkVersion: "2 || 3"
 
 plugins:
@@ -7,7 +7,7 @@ plugins:
   - serverless-offline
 
 custom:
-  resourceNamePrefix: giveitaway
+  resourceNamePrefix: giveitawaynow
 
 provider:
   name: aws

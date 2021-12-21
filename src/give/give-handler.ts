@@ -28,7 +28,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
   const client = new DynamoDBClient({ region: "ap-southeast-2" });
 
   const params: PutItemCommandInput = {
-    TableName: "giveitaway-items",
+    TableName: "giveitawaynow-items",
     Item: marshall(postData),
   };
 
